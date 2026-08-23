@@ -1,0 +1,46 @@
+                  +--------------------------------------------------+
+                  |  Customer Intake: Web Form Free-Text + Order ID  |
+                  +--------------------------------------------------+
+                                           |
+                                           v
+             +------------------------------------------------------------+
+             | PRE-FILTER: Deterministic Rules & Guardrails (Code/Python) |
+             | - Item Value > $250? / Final Sale / Safety Gear?           |
+             | - Lifetime Claim Rate Flag? / Missing Photo on Defect?     |
+             +------------------------------------------------------------+
+                             /                           \
+                 [Flagged / Hard Rule Trip]           [Passed]
+                           /                               \
+                          v                                 v
+            +---------------------------+     +-----------------------------------+
+            | Human Review Queue (Zendesk)|    | Agent Step 1: Extraction & Intent |
+            +---------------------------+     +-----------------------------------+
+                          ^                                 |
+                          |                                 v
+                          |                   +-----------------------------------+
+                          |                   | Hybrid RAG Context Assembly       |
+                          |                   | - Vector Index: Policy / FAQs     |
+                          |                   | - SQL Lookup: Order & Customer Data|
+                          |                   +-----------------------------------+
+                          |                                 |
+                          |                                 v
+                          |                   +-----------------------------------+
+                          |                   | Agent Step 2: Policy Evaluation   |
+                          |                   | & Confidence Scoring              |
+                          |                   +-----------------------------------+
+                          |                                 |
+                          |                   +-----------------------------------+
+                          |                   | POST-FILTER: Output Validation    |
+                          |                   | - Deterministic JSON Schema Check |
+                          |                   | - Confidence Score >= 0.85?       |
+                          +<---[Score < 0.85 / Invalid Output]--+
+                                                            |
+                                                   [Approved Routine]
+                                                            |
+                                                            v
+                                              +-----------------------------------+
+                                              | Backend Action: Logistics & CRM   |
+                                              | - Generate Return Label           |
+                                              | - Issue Pending RMA Record        |
+                                              | - Dispatch Confirmation Email     |
+                                              +-----------------------------------+
